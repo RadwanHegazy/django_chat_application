@@ -1,0 +1,243 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-image: url('images/bg.png'); */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.cont {
+    width: 500px;
+    height: 95vh;
+    padding: 2rem 0.5rem 2rem 0.5rem;
+    background-color: #000;
+    display: block;
+    overflow: hidden;
+    position: relative;
+}
+
+
+.cont .bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+.cont .top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    background-color: #000;
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+    padding: 1rem 3rem;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.top h1 {
+    font-size: 25px;
+    font-family: sans-serif;
+    color: #c6c6c6;
+}
+
+.top ul {
+    color: #c6c6c6;
+    display: flex;
+    list-style-type: none;
+    gap: 30px;
+}
+
+.top a {
+    text-decoration: none;
+    color: #c6c6c6;
+}
+
+
+.cont .bottom {
+    z-index: 4;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    background-color: transparent;
+    border: none;
+    padding: 7px;
+    border-bottom: 10px solid #000;
+    /* border: 1px solid red; */
+    /* overflow: hidden; */
+    /* border-top-left-radius: 50px;  */
+    display: flex;
+    flex-direction: row;
+}
+
+.bottom input {
+    width: 80%;
+    height: 100%;
+    /* border-top-left-radius: 50px; */
+    padding: 1rem 3rem;
+    border: none;
+    outline: none;
+}
+
+.msg-icon{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 15px;
+    color: #c6c6c6;
+}
+.bottom .btns {
+    width: 20%;
+    height: 100%;
+    display: flex;
+    background-color: #fff;
+    justify-content: center;
+    flex-direction: row;
+    padding: 7px;
+    gap: 5px;
+    border-left: 1px solid #c6c6c6;
+}
+
+.btns button {
+    width: 50%;
+    border: none;
+    outline: none;
+    color: #c6c6c6;
+    background-color: #000;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+
+.replay {
+    z-index: 2;
+    position: absolute;
+    width: 100%;
+    height: 60px;
+    padding: 1rem;
+    background-color: #c6c6c673;
+    z-index: 1;
+    left: 0;
+    top: -50px;
+    display: none;
+    flex-direction: column;
+    padding-left: 3rem;
+    font-family: sans-serif;
+}
+
+.replay.view {
+    display: flex;
+}
+
+.replay > .a {
+    width: 5px;
+    height: 60%;
+    background-color: #000;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 30px;
+}
+
+.replay .close {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    right: 0px;
+    cursor: pointer;
+}
+
+
+@media (max-width:800px){
+    .cont {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+
+
+
+.cont .msgs {
+    position: absolute;
+    overflow-y: auto;
+    width: 100%;
+    height: 75%;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+
+.msgs .msg {
+    width: 100%;
+    padding: 7px;
+    display: flex;
+    height: auto;
+    color: red;
+}
+
+
+.msg.sender {
+    justify-content: flex-end;
+}
+
+
+.controler .info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 7px ;
+    color: #c6c6c6;
+    align-items: center;
+}
+
+.msg .controler {
+    padding: 17px;
+    min-width: 200px;
+    height: auto;
+    color: #fff;
+    border-radius: 15px;
+}
+
+.msg.sender .controler{
+    background-color: #000;
+    border-bottom-right-radius: 0;
+}
+.msg.reciver .controler{
+    background-color: #555;
+    border-bottom-left-radius: 0;
+}
+
+.msg .img {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.msg .img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}

@@ -1,0 +1,259 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="{% static 'css/room.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+<body style="background-image: url('/static/images/bg.png');">
+    
+    
+    <div class="cont">
+        <img src="{% static 'images/bg-chat.png' %}" alt="" class="bg">
+
+        <div class="top">
+            <h1>{{ room.name }}</h1>
+            <ul>
+                <li><a href="#">{{ room.user.count }} <i class="fas fa-user"></i></a></li>
+                <li><a href="{% url 'logout' %}"><i class="fas fa-power-off"></i></a></li>
+            </ul>
+
+        </div>
+
+        <div class="msgs">
+
+            <!-- <div class="msg sender">
+                <div class="controler">
+                    <div class="info">
+                        <p>username</p>
+                        <small>3 min ago</small>
+                    </div>
+                    <p>Message from me </p>
+                </div>
+            </div>
+            
+            <div class="msg reciver">
+                <div class="controler">
+                    <div class="info">
+                        <p>username</p>
+                        <small>3 min ago</small>
+                    </div>
+                    <p>Message from another user</p>
+                </div>
+            </div> -->
+
+
+            <!-- <div class="msg sender">
+                <div class="controler">
+                    <div class="info">
+                        <p>username</p>
+                        <small>3 min ago</small>
+                    </div>
+                    <div class="img">
+                        <img src="me.jpeg" alt="">
+                    </div>
+                </div>
+            </div> -->
+
+        
+
+            
+        </div>
+
+
+        <div class="bottom">
+            
+            <input type="text" id="mymsg">
+            
+            <i class="fas fa-message msg-icon"></i>
+            
+            <div class="btns">
+                <button id="send_msg"><i class="fas fa-paper-plane"></i></button>
+                <button id="img"><i class="fas fa-image"></i></button>
+                <input type="file" hidden id="upload-img">
+            </div>
+
+        </div>
+
+    </div>
+
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
+    <script>
+
+        
+        var imgBtn = document.querySelector('#img');
+        var imageForm = document.querySelector('#upload-img');
+
+
+
+        // Send Message
+        imgBtn.addEventListener('click',()=>{
+            imageForm.click()
+        })
+
+        imageForm.addEventListener('change',e=>{
+            
+            var img = e.target.files[0] ;
+            var form = new FormData()
+            
+            form.append('userid','{{user.id}}')
+            form.append('roomid','{{room.id}}')
+            form.append('image',img)
+            
+            $.ajax({
+                method:"POST",
+                processData: false,
+                contentType: false,
+                mimeType: "multipart/form-data",
+                url:'{% url "send_msg" %}',
+                data:form
+                ,success:function(data){
+                    console.log(data)
+                },
+            })
+
+        })
+
+        function SendMsg(msg){
+            if (msg.value){
+
+                $.ajax({
+                    method:"POST",
+                    url:'{% url "send_msg" %}',
+                    data:{
+                        'userid':"{{user.id}}",
+                        'roomid':"{{room.id}}",
+                        'msg':msg.value
+                    },success:function(data){
+                        console.log(data)
+                        msg.value = '';
+                    }
+                })
+            }else{
+                alert('Enter Your Message')
+            }
+        }
+        var msg = document.querySelector('#mymsg')
+
+        $(msg).keyup(function(event) {
+            if (event.keyCode === 13) {
+                SendMsg(this)
+            }
+        });
+
+        document.querySelector('#send_msg').addEventListener('click',()=>{
+            SendMsg(msg)
+        })
+
+
+
+
+        // Fetch All Messages
+        
+        function InsertMsg (sender,date,text,image_url){
+
+
+        }
+
+        let las_t ;
+        setInterval(function(){
+            $.ajax({
+                method:'GET',
+                url:"{% url 'all_msgs' %}",
+                data:{
+                    'roomid':"{{ room.id }}",
+                },success:function(data){
+
+                    if ( las_t == data.length){
+                        console.log('equal')
+                    }else{
+                        $('.msgs').empty()
+                        for (var i=0;i<data.length;i++){
+    
+                            
+                            var sender = data[i]['sender'];
+                            var date = data[i]['date'];
+                            var text = data[i]['body'];
+                            var image_url = data[i]['img'];
+    
+                            if (sender == '{{ user }}'){
+                                if (text){
+                                    var bar = `<div class="msg sender">
+                                        <div class="controler">
+                                            <div class="info">
+                                                <p>${sender}</p>
+                                                <small>${date}</small>
+                                            </div>
+                                            <p>${text}</p>
+                                        </div>
+                                    </div>`;
+                                }
+                                else{
+                                    var bar = `<div class="msg sender">
+                                        <div class="controler">
+                                            <div class="info">
+                                                <p>${sender}</p>
+                                                <small>${date}</small>
+                                            </div>
+                                            <div class="img">
+                                                <img src="${image_url}" alt="">
+                                            </div>
+                                        </div>
+                                    </div>`;
+                                }
+    
+                            }
+                            else{
+                                if (text){
+                                    var bar = `<div class="msg reciver">
+                                        <div class="controler">
+                                            <div class="info">
+                                                <p>${sender}</p>
+                                                <small>${date}</small>
+                                            </div>
+                                            <p>${text}</p>
+                                        </div>
+                                    </div>`;
+                                }
+                                else{
+                                    var bar = `<div class="msg reciver">
+                                        <div class="controler">
+                                            <div class="info">
+                                                <p>${sender}</p>
+                                                <small>${date}</small>
+                                            </div>
+                                            <div class="img">
+                                                <img src="${image_url}" alt="">
+                                            </div>
+                                        </div>
+                                    </div>`;
+                                }
+                            
+                            }
+                            
+                            
+                            document.querySelector('.msgs').innerHTML += bar;
+    
+                            las_t = data.length;   
+                        }
+
+                        var obj = document.querySelector('.msgs');
+                        obj.scrollTop = obj.scrollHeight;
+                    }
+                    
+                }
+            })
+        },100)
+        
+    </script>
+
+    
+</body>
+</html>
